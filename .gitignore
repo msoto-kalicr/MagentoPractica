@@ -1,2 +1,3 @@
-src/var/log/cron.log
-src/var/log/debug.log
+src/generated/
+src/var/
+src/vendor/
