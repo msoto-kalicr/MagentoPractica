@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
@@ -21,14 +22,14 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
         <td data-th="<?= $block->escapeHtml(__('Item')) ?>" class="col item">
             <?php if ($block->hasProductUrl()): ?>
                 <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"
-                   title="<?= $block->escapeHtml($block->getProductName()) ?>"
-                   tabindex="-1"
-                   class="product-item-photo">
-            <?php else: ?>
-                <span class="product-item-photo">
-            <?php endif; ?>
-            <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml() ?>
-            <?php if ($block->hasProductUrl()): ?>
+                    title="<?= $block->escapeHtml($block->getProductName()) ?>"
+                    tabindex="-1"
+                    class="product-item-photo">
+                <?php else: ?>
+                    <span class="product-item-photo">
+                    <?php endif; ?>
+                    <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml() ?>
+                    <?php if ($block->hasProductUrl()): ?>
                 </a>
             <?php else: ?>
                 </span>
@@ -48,9 +49,9 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                             <dt><?= $block->escapeHtml($_option['label']) ?></dt>
                             <dd>
                                 <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                                        <?= $block->escapeHtml($_formatedOptionValue['full_view'], ['span', 'a']) ?>
-                                    <?php else: ?>
-                                        <?= $block->escapeHtml($_formatedOptionValue['value'], ['span', 'a']) ?>
+                                    <?= $block->escapeHtml($_formatedOptionValue['full_view'], ['span', 'a']) ?>
+                                <?php else: ?>
+                                    <?= $block->escapeHtml($_formatedOptionValue['value'], ['span', 'a']) ?>
                                 <?php endif; ?>
                             </dd>
                         <?php endforeach; ?>
@@ -58,7 +59,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                 <?php endif; ?>
                 <?php if ($messages = $block->getMessages()): ?>
                     <?php foreach ($messages as $message): ?>
-                        <div class= "cart item message <?= $block->escapeHtmlAttr($message['type']) ?>">
+                        <div class="cart item message <?= $block->escapeHtmlAttr($message['type']) ?>">
                             <div><?= $block->escapeHtml($message['text']) ?></div>
                         </div>
                     <?php endforeach; ?>
@@ -76,21 +77,20 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <span class="msrp notice"><?= $block->escapeHtml(__('See price before order confirmation.')) ?></span>
                     <?php $helpLinkId = 'cart-msrp-help-' . $_item->getId(); ?>
                     <a href="#" class="action help map"
-                       id="<?= ($block->escapeHtmlAttr($helpLinkId)) ?>"
-                       data-mage-init='{"addToCart":{
+                        id="<?= ($block->escapeHtmlAttr($helpLinkId)) ?>"
+                        data-mage-init='{"addToCart":{
                                             "origin": "info",
                                             "helpLinkId": "#<?= $block->escapeJs($block->escapeHtml($helpLinkId)) ?>",
                                             "productName": "<?= $block->escapeJs($block->escapeHtml($product->getName())) ?>",
                                             "showAddToCart": false
                                             }
-                                        }'
-                    >
+                                        }'>
                         <span><?= $block->escapeHtml(__("What's this?")) ?></span>
                     </a>
                 </span>
             </td>
         <?php else: ?>
-             <td class="col custom" data-th="<?= $block->escapeHtml(__('Custom')) ?>">
+            <td class="col custom" data-th="<?= $block->escapeHtml(__('Custom')) ?>">
                 <?= "Texto Custom" ?>
             </td>
             <td class="col price" data-th="<?= $block->escapeHtml(__('Price')) ?>">
@@ -102,19 +102,21 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                 <div class="control qty">
                     <label for="cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty">
                         <span class="label"><?= $block->escapeHtml(__('Qty')) ?></span>
-                        <input id="cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty"
-                               name="cart[<?= $block->escapeHtmlAttr($_item->getId()) ?>][qty]"
-                               data-cart-item-id="<?= $block->escapeHtmlAttr($_item->getSku()) ?>"
-                               value="<?= $block->escapeHtmlAttr($block->getQty()) ?>"
-                               type="number"
-                               min="0"
-                               size="4"
-                               step="any"
-                               title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
-                               class="input-text qty"
-                               data-validate="{required:true,'validate-greater-than-zero':true}"
-                               data-item-qty="<?= $block->escapeHtmlAttr($block->getQty()) ?>"
-                               data-role="cart-item-qty"/>
+                        <select id="cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty"
+                            name="cart[<?= $block->escapeHtmlAttr($_item->getId()) ?>][qty]"
+                            data-cart-item-id="<?= $block->escapeHtmlAttr($_item->getSku()) ?>"
+                            class="input-text qty"
+                            title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
+                            data-role="cart-item-qty"
+                            data-validate="{required:true,'validate-greater-than-zero':true}">
+
+                            <?php for ($i = 1; $i <= 30; $i++): ?>
+                                <option value="<?= $i ?>" <?= ($i == $block->getQty()) ? 'selected' : '' ?>>
+                                    <?= $i ?>
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+
                     </label>
                 </div>
             </div>
