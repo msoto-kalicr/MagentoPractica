@@ -4,8 +4,45 @@
  * Custom template check — Kalicr theme
  */
 ?>
+
+<?php 
+$customerName = '';
+$customerLastName = '';
+
+$customerSession = $block->getLayout()->createBlock(\Magento\Customer\Block\Account\Dashboard\Info::class);
+
+if ($customerSession && $customerSession->getCustomer()->getId()) {
+    $customerName = $block->escapeHtml($customerSession->getCustomer()->getFirstname());
+    $customerLastName = $block->escapeHtml($customerSession->getCustomer()->getLastname());
+}
+?>
+
+
 <div style="text-align:center; background:#f9f9f9; padding:10px; color:#555;">
-    <small>🛒 Custom Cart Template Loaded (Kalicr Theme)</small>
+    <small>Seccion agregada customizada en Checkout Cart</small><br>
+
+    <?php if ($customerName): ?>
+        <span style="font-size:16px; color:#666;">
+            Cliente: <?= $customerName ?> <?= $customerLastName ?>
+        </span>
+
+        <div style="margin-top:5px; font-size:14px; color:#777;">
+            Tiempo en esta pagina: <span id="time-counter">0 min 0 sec</span>
+        </div>
+
+        <script>
+            let totalSegundos = 0;
+            setInterval(() => {
+                totalSegundos++;
+
+                const minutos = Math.floor(totalSegundos / 60);
+                const segundos = totalSegundos % 60;
+
+                document.getElementById('time-counter').innerText = 
+                    minutos + " min " + segundos + " seg";
+            }, 1000);
+        </script>
+    <?php endif; ?>
 </div>
 
 <?php
