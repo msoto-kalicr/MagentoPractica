@@ -6,14 +6,16 @@
 ?>
 
 <?php 
-$customerName = '';
+$customerName = 'Guest';
 $customerLastName = '';
 
-$customerSession = $block->getLayout()->createBlock(\Magento\Customer\Block\Account\Dashboard\Info::class);
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
 
-if ($customerSession && $customerSession->getCustomer()->getId()) {
-    $customerName = $block->escapeHtml($customerSession->getCustomer()->getFirstname());
-    $customerLastName = $block->escapeHtml($customerSession->getCustomer()->getLastname());
+if ($customerSession->isLoggedIn()) {
+    $customer = $customerSession->getCustomer();
+    $customerName = $block->escapeHtml($customer->getFirstname());
+    $customerLastName = $block->escapeHtml($customer->getLastname());
 }
 ?>
 
