@@ -21,10 +21,10 @@ use Magento\Framework\App\Action\Action;
 $_productCollection = $block->getLoadedProductCollection();
 /** @var \Magento\Catalog\Helper\Output $_helper */
 $_helper = $block->getData('outputHelper');
-
-// Obtener el total de productos en la categoría
-$category = $block->getLayer()->getCurrentCategory();
-$totalProducts = $category->getProductCount();
+$totalProducts = $_productCollection->getSize();
+if (!isset($totalProducts)) {
+    $totalProducts = 0;
+}
 ?>
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty">
@@ -33,12 +33,9 @@ $totalProducts = $category->getProductCount();
 <?php else: ?>
     <?= $block->getToolbarHtml() ?>
     <?= $block->getAdditionalHtml() ?>
-
-    <!-- Mostrar total de productos en la categoría -->
-    <div class="category-product-total" style="background: #f8f8f8; padding: 10px; margin-bottom: 15px; border-left: 4px solid #1979c3;">
+    <div class="category-product-total" style="background: #f8f8f8; padding: 10px; margin-bottom: 15px; border-left: 4px solid #1979c3; text-align: center;">
         <strong><?= __('Total de productos en esta categoría: %1', $totalProducts) ?></strong>
     </div>
-
     <?php
     if ($block->getMode() === 'grid') {
         $viewMode = 'grid';
@@ -86,26 +83,11 @@ $totalProducts = $category->getProductCount();
                                     <?=/* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                                 </a>
                             </strong>
-
-                            <!-- MOSTRAR SKU -->
-                            <div class="product-sku" style="font-size: 12px; color: #666; margin: 5px 0;">
-                                <span class="label" style="font-weight: bold;">SKU:</span>
-                                <span class="value"><?= $escaper->escapeHtml($_product->getSku()) ?></span>
-                            </div>
-
-                            <!-- MOSTRAR ATRIBUTO CUSTOM -->
-                            <!-- Reemplaza 'custom_attribute' con el código de tu atributo personalizado -->
-                            <?php
-                            // Ejemplo con atributo 'color' - cambia por tu atributo
-                            $customAttributeCode = 'color'; // CAMBIA ESTO por tu atributo
-                            $customAttributeValue = $_product->getAttributeText($customAttributeCode);
-                            ?>
-                            <?php if ($customAttributeValue): ?>
-                                <div class="product-custom-attribute" style="font-size: 12px; color: #666; margin: 5px 0;">
-                                    <span class="value"><?= $escaper->escapeHtml($customAttributeValue) ?></span>
-                                </div>
-                            <?php endif; ?>
-
+                            <strong class="product sku product-item-sku">
+                                <strong class="product sku product-item-sku">
+                                    <?=/* @noEscape */ $_helper->productAttribute($_product, $_product->getSku(), 'sku') ?>
+                                </strong>
+                            </strong>
                             <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
                             <?= /* @noEscape */ $block->getProductPrice($_product) ?>
 
